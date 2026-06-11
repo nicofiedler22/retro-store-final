@@ -16,19 +16,23 @@ public class Autenticador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(length = 13, unique = true, nullable = false)
     private String rut;
 
-    @Column
+    @Column(length = 50, nullable = false)
     private String nombre;
 
-    @Column
+    @Column(length = 50, nullable = false)
     private String apellido;
 
-    @Column
+    @Column(length = 100, nullable = false, unique = true)
     private String correo;
 
-    @Column
+    @Column(length = 255, nullable = false)
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "rol_id")
+    private Rol rol;
 
 }
