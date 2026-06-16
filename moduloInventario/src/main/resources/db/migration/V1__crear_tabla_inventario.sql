@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS inventario (
+    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    producto_id  BIGINT NOT NULL,
+    nombre       VARCHAR(150) NOT NULL,
+    cantidad     INT NOT NULL DEFAULT 0,
+    stock_minimo INT NOT NULL DEFAULT 5,
+    ubicacion    VARCHAR(100),
+    activo       BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_actualizacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
