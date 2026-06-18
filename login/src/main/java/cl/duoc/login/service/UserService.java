@@ -1,47 +1,42 @@
 package cl.duoc.login.service;
 
-import cl.duoc.login.dto.UserCreateDTO;
+import cl.duoc.login.dto.AutenticadorUserDTO;
 import cl.duoc.login.dto.UserCredentialsDTO;
-import cl.duoc.login.dto.UserDTO;
-import cl.duoc.login.model.User;
-import cl.duoc.login.repository.UserRepository;
+import cl.duoc.login.security.JwtUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final WebClient webClient;
+    private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(WebClient webClient, JwtUtil jwtUtil) {
+        this.webClient = webClient;
+        this.jwtUtil = jwtUtil;
     }
 
-    public UserDTO createUser(UserCreateDTO dto) {
+    public String login(UserCredentialsDTO dto) {
 
-        User user = new User();
-        user.setCorreo(dto.getCorreo());
-        user.setPassword(dto.getPassword());
+        AutenticadorUserDTO usuario = webClient.get()
+                .uri("/api/v1/autenticadores/correo/{correo}", dto.getCorreo())
+                .retrieve()
+                .bodyToMono(AutenticadorUserDTO.class)
+                .block();
 
-        User savedUser = userRepository.save(user);
+        if (usuario == null) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
 
-        return new UserDTO(
-                savedUser.getId(),
-                savedUser.getCorreo()
-        );
-    }
-
-    public UserDTO login(UserCredentialsDTO dto) {
-
-        User user = userRepository.findByCorreo(dto.getCorreo())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        if (!user.getPassword().equals(dto.getPassword())) {
+        if (!usuario.getPassword().equals(dto.getPassword())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        return new UserDTO(
-                user.getId(),
-                user.getCorreo()
-        );
+        return jwtUtil.generateToken(usuario.getCorreo());
+    }
+
+    public boolean validateToken(String token) {
+        return jwtUtil.validateToken(token);
     }
 }

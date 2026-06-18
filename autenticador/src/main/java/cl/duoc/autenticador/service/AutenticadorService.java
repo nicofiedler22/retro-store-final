@@ -28,4 +28,9 @@ public class AutenticadorService {
     public void deleteById(Long id) {
         autenticadorRepository.deleteById(id);
     }
+    
+    public Autenticador buscarPorCorreo(String correo) {
+    return autenticadorRepository.findByCorreo(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
 }
