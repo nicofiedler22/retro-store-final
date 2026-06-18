@@ -1,0 +1,20 @@
+services:
+  mysql-login:
+    image: mysql:8.0
+    container_name: mysql_login
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: nico1415
+      MYSQL_DATABASE: retrostore_login
+      MYSQL_USER: retrostore
+      MYSQL_PASSWORD: nico1415
+
+    ports:
+      - "3310:3306"
+
+    volumes:
+      - mysql_login_data:/var/lib/mysql
+
+volumes:
+  mysql_login_data:
