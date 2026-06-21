@@ -11,14 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.duoc.autenticador.dto.ApiResponse;
 import cl.duoc.autenticador.model.Autenticador;
 import cl.duoc.autenticador.service.AutenticadorService;
-import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/autenticadores")
 public class AutenticadorController {
 
     private final AutenticadorService autenticadorService;
+
+    public AutenticadorController(AutenticadorService autenticadorService) {
+        this.autenticadorService = autenticadorService;
+    }
 
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<Autenticador>>> getAllAutenticadores() {
@@ -32,9 +34,7 @@ public class AutenticadorController {
     }
 
     @GetMapping("/correo/{correo}")
-    public ResponseEntity<Autenticador> buscarPorCorreo(
-            @PathVariable String correo) {
-
+    public ResponseEntity<Autenticador> buscarPorCorreo(@PathVariable String correo) {
         return ResponseEntity.ok(
                 autenticadorService.buscarPorCorreo(correo)
         );

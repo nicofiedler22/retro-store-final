@@ -2,16 +2,18 @@ package cl.duoc.autenticador.service;
 
 import cl.duoc.autenticador.model.Autenticador;
 import cl.duoc.autenticador.repository.AutenticadorRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class AutenticadorService {
 
     private final AutenticadorRepository autenticadorRepository;
+
+    public AutenticadorService(AutenticadorRepository autenticadorRepository) {
+        this.autenticadorRepository = autenticadorRepository;
+    }
 
     public List<Autenticador> findAll() {
         return autenticadorRepository.findAll();
@@ -25,12 +27,12 @@ public class AutenticadorService {
         return autenticadorRepository.findById(id).orElse(null);
     }
 
+    public Autenticador buscarPorCorreo(String correo) {
+        return autenticadorRepository.findByCorreo(correo)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
     public void deleteById(Long id) {
         autenticadorRepository.deleteById(id);
-    }
-    
-    public Autenticador buscarPorCorreo(String correo) {
-    return autenticadorRepository.findByCorreo(correo)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 }
