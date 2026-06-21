@@ -13,16 +13,6 @@ import java.security.SecureRandom;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Servicio de pagos.
- *
- * IMPORTANTE: este servicio SIMULA una pasarela de pago (al estilo Webpay/Transbank)
- * para fines académicos/demo. No realiza cargos reales ni se conecta a ninguna
- * pasarela externa. El flujo es:
- *   1) iniciarPago: crea la transacción en estado PENDIENTE y genera un token.
- *   2) confirmarPago: con el token, "resuelve" la transacción (aprobada/rechazada).
- *   3) anularPago: anula una transacción previamente iniciada/aprobada.
- */
 @Service
 @RequiredArgsConstructor
 public class PagoService {
@@ -69,7 +59,7 @@ public class PagoService {
                     "La transacción ya fue resuelta anteriormente (estado actual: " + pago.getEstado() + ")");
         }
 
-        // Simulación de la respuesta de la pasarela: 90% de aprobación.
+
         boolean aprobado = random.nextInt(100) < 90;
         pago.setEstado(aprobado ? EstadoPago.APROBADO : EstadoPago.RECHAZADO);
 

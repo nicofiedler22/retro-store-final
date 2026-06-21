@@ -3,7 +3,7 @@ spring:
     name: pagos
 
   datasource:
-    url: jdbc:mysql://localhost:3312/retrostore_pagos
+    url: jdbc:mysql://localhost:3306/retrostore_pagos
     username: retrostore
     password: nico1415
     driver-class-name: com.mysql.cj.jdbc.Driver
