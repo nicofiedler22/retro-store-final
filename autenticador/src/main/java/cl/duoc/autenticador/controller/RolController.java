@@ -1,23 +1,24 @@
 package cl.duoc.autenticador.controller;
 
-import java.util.List;
-
+import cl.duoc.autenticador.dto.ApiResponse;
+import cl.duoc.autenticador.model.Rol;
+import cl.duoc.autenticador.service.RolService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.duoc.autenticador.dto.ApiResponse;
-import cl.duoc.autenticador.model.Rol;
-import cl.duoc.autenticador.service.RolService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/roles")
 public class RolController {
 
     private final RolService rolService;
+
+    public RolController(RolService rolService) {
+        this.rolService = rolService;
+    }
 
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<Rol>>> getAllRoles() {
