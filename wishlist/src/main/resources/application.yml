@@ -3,7 +3,7 @@ spring:
     name: wishlist
 
   datasource:
-    url: jdbc:mysql://localhost:3313/retrostore_wishlist
+    url: jdbc:mysql://localhost:3306/retrostore_wishlist
     username: retrostore
     password: nico1415
     driver-class-name: com.mysql.cj.jdbc.Driver
